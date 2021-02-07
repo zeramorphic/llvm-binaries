@@ -9,14 +9,14 @@ jobs:
       - name: Set up Ninja
         uses: seanmiddleditch/gha-setup-ninja@master
       - name: Download LLVM sources
-        run: |
-          sudo mkdir /llvm
-          sudo curl -s https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/llvm-project-11.0.1.src.tar.xz | tar xf -C /llvm
+        uses: teddyking/dependency-action@master
+        with:
+          deps: https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/llvm-project-11.0.1.src.tar.xz
       - name: Configure CMake
         run: |
           sudo mkdir /llvm-build
           sudo cd /llvm-build
-          sudo cmake -G Ninja /llvm
+          sudo cmake -G Ninja /github/home/llvm-project-11.0.1.src
       - name: Compile LLVM
         run: |
           sudo cd /llvm_build
