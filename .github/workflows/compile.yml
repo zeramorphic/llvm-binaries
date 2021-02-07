@@ -16,9 +16,11 @@ jobs:
           mkdir $GITHUB_WORKSPACE/llvm-build
           cd $GITHUB_WORKSPACE/llvm-build
           cmake $GITHUB_WORKSPACE/llvm
+          ls -lah $GITHUB_WORKSPACE/llvm
       - name: Compile LLVM
         run: |
           cd $GITHUB_WORKSPACE/llvm_build
+          ls -lah $GITHUB_WORKSPACE/llvm
           cmake --build .
       - name: Install LLVM
         run: |
