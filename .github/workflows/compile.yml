@@ -6,8 +6,6 @@ jobs:
   compile-llvm:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Ninja
-        uses: seanmiddleditch/gha-setup-ninja@master
       - name: Download LLVM sources
         uses: actions/checkout@v2
         with:
@@ -17,7 +15,7 @@ jobs:
         run: |
           mkdir ~/llvm-build
           cd ~/llvm-build
-          cmake -G Ninja $GITHUB_WORKSPACE/llvm
+          cmake $GITHUB_WORKSPACE/llvm
       - name: Compile LLVM
         run: |
           cd ~/llvm_build
