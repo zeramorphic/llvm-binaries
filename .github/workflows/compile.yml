@@ -9,16 +9,15 @@ jobs:
       - name: Set up Ninja
         uses: seanmiddleditch/gha-setup-ninja@master
       - name: Download LLVM sources
-        uses: teddyking/dependency-action@master
+        uses: actions/checkout@v2
         with:
-          deps: https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/llvm-project-11.0.1.src.tar.xz
-      - name: Debugging
-        run: sudo ls -lah /github/home
+          repository: llvm/llvm-project
+          ref: release/11.x
       - name: Configure CMake
         run: |
           sudo mkdir /llvm-build
           cd /llvm-build
-          sudo cmake -G Ninja /github/home/llvm-project-11.0.1.src
+          sudo cmake -G Ninja $GITHUB_WORKSPACE/llvm
       - name: Compile LLVM
         run: |
           cd /llvm_build
