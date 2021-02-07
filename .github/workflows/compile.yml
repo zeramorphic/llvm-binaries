@@ -1,0 +1,40 @@
+name: Compile LLVM
+
+on: [push]
+
+jobs:
+  compile-llvm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: seanmiddleditch/gha-setup-ninja@master
+      - run: curl -s https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/llvm-project-11.0.1.src.tar.xz | tar xvz -C /llvm
+      - name: Configure CMake
+        run: |
+          mkdir /llvm-build
+          cd /llvm-build
+          cmake -G Ninja /llvm
+      - name: Compile LLVM
+        run: |
+          cd /llvm_build
+          cmake --build .
+      - name: Install LLVM
+        run: |
+          cd /llvm-build
+          mkdir /llvm-bin
+          cmake -DCMAKE_INSTALL_PREFIX=/llvm-bin -P cmake_install.cmake
+          cmake --build . --target install
+      - name: Upload binary artifacts
+        uses: actions/upload-artifact@v2
+          with:
+            name: bin
+            path: /llvm-bin/bin/
+      - name: Upload library artifacts
+        uses: actions/upload-artifact@v2
+          with:
+            name: lib
+            path: /llvm-bin/lib/
+      - name: Upload include artifacts
+        uses: actions/upload-artifact@v2
+          with:
+            name: lib
+            path: /llvm-bin/include/
