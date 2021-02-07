@@ -15,31 +15,31 @@ jobs:
           ref: release/11.x
       - name: Configure CMake
         run: |
-          sudo mkdir /llvm-build
-          cd /llvm-build
-          sudo cmake -G Ninja $GITHUB_WORKSPACE/llvm
+          mkdir ~/llvm-build
+          cd ~/llvm-build
+          cmake -G Ninja $GITHUB_WORKSPACE/llvm
       - name: Compile LLVM
         run: |
-          cd /llvm_build
-          sudo cmake --build .
+          cd ~/llvm_build
+          cmake --build .
       - name: Install LLVM
         run: |
-          cd /llvm-build
-          sudo mkdir /llvm-bin
-          sudo cmake -DCMAKE_INSTALL_PREFIX=/llvm-bin -P cmake_install.cmake
-          sudo cmake --build . --target install
+          cd ~/llvm-build
+          mkdir ~/llvm-bin
+          cmake -DCMAKE_INSTALL_PREFIX=~/llvm-bin -P cmake_install.cmake
+          cmake --build . --target install
       - name: Upload binary artifacts
         uses: actions/upload-artifact@v2
         with:
           name: bin
-          path: /llvm-bin/bin/
+          path: ~/llvm-bin/bin/
       - name: Upload library artifacts
         uses: actions/upload-artifact@v2
         with:
           name: lib
-          path: /llvm-bin/lib/
+          path: ~/llvm-bin/lib/
       - name: Upload include artifacts
         uses: actions/upload-artifact@v2
         with:
           name: include
-          path: /llvm-bin/include/
+          path: ~/llvm-bin/include/
