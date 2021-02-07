@@ -12,11 +12,12 @@ jobs:
         uses: teddyking/dependency-action@master
         with:
           deps: https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/llvm-project-11.0.1.src.tar.xz
+      - name: Debugging
+        run: sudo ls -lah /github/home
       - name: Configure CMake
         run: |
           sudo mkdir /llvm-build
           cd /llvm-build
-          ls /github/home
           sudo cmake -G Ninja /github/home/llvm-project-11.0.1.src
       - name: Compile LLVM
         run: |
