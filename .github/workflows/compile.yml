@@ -25,16 +25,16 @@ jobs:
           cmake --build . --target install
       - name: Upload binary artifacts
         uses: actions/upload-artifact@v2
-          with:
-            name: bin
-            path: /llvm-bin/bin/
+        with:
+          name: bin
+          path: /llvm-bin/bin/
       - name: Upload library artifacts
         uses: actions/upload-artifact@v2
-          with:
-            name: lib
-            path: /llvm-bin/lib/
+        with:
+          name: lib
+          path: /llvm-bin/lib/
       - name: Upload include artifacts
         uses: actions/upload-artifact@v2
-          with:
-            name: lib
-            path: /llvm-bin/include/
+        with:
+          name: lib
+          path: /llvm-bin/include/
