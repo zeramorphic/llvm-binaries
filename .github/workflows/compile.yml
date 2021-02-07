@@ -16,6 +16,7 @@ jobs:
         run: |
           sudo mkdir /llvm-build
           cd /llvm-build
+          ls /github/home
           sudo cmake -G Ninja /github/home/llvm-project-11.0.1.src
       - name: Compile LLVM
         run: |
