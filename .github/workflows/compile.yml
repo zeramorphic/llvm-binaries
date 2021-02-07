@@ -10,8 +10,8 @@ jobs:
         uses: seanmiddleditch/gha-setup-ninja@master
       - name: Download LLVM sources
         run: |
-        mkdir /llvm
-        curl -s https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/llvm-project-11.0.1.src.tar.xz | tar xf -C /llvm
+          mkdir /llvm
+          curl -s https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/llvm-project-11.0.1.src.tar.xz | tar xf -C /llvm
       - name: Configure CMake
         run: |
           mkdir /llvm-build
