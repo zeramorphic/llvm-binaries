@@ -15,15 +15,15 @@ jobs:
       - name: Configure CMake
         run: |
           sudo mkdir /llvm-build
-          sudo cd /llvm-build
+          cd /llvm-build
           sudo cmake -G Ninja /github/home/llvm-project-11.0.1.src
       - name: Compile LLVM
         run: |
-          sudo cd /llvm_build
+          cd /llvm_build
           sudo cmake --build .
       - name: Install LLVM
         run: |
-          sudo cd /llvm-build
+          cd /llvm-build
           sudo mkdir /llvm-bin
           sudo cmake -DCMAKE_INSTALL_PREFIX=/llvm-bin -P cmake_install.cmake
           sudo cmake --build . --target install
