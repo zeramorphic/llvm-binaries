@@ -10,23 +10,23 @@ jobs:
         uses: seanmiddleditch/gha-setup-ninja@master
       - name: Download LLVM sources
         run: |
-          mkdir /llvm
-          curl -s https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/llvm-project-11.0.1.src.tar.xz | tar xf -C /llvm
+          sudo mkdir /llvm
+          sudo curl -s https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/llvm-project-11.0.1.src.tar.xz | tar xf -C /llvm
       - name: Configure CMake
         run: |
-          mkdir /llvm-build
-          cd /llvm-build
-          cmake -G Ninja /llvm
+          sudo mkdir /llvm-build
+          sudo cd /llvm-build
+          sudo cmake -G Ninja /llvm
       - name: Compile LLVM
         run: |
-          cd /llvm_build
-          cmake --build .
+          sudo cd /llvm_build
+          sudo cmake --build .
       - name: Install LLVM
         run: |
-          cd /llvm-build
-          mkdir /llvm-bin
-          cmake -DCMAKE_INSTALL_PREFIX=/llvm-bin -P cmake_install.cmake
-          cmake --build . --target install
+          sudo cd /llvm-build
+          sudo mkdir /llvm-bin
+          sudo cmake -DCMAKE_INSTALL_PREFIX=/llvm-bin -P cmake_install.cmake
+          sudo cmake --build . --target install
       - name: Upload binary artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -40,5 +40,5 @@ jobs:
       - name: Upload include artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: lib
+          name: include
           path: /llvm-bin/include/
