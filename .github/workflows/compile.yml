@@ -35,12 +35,12 @@ jobs:
       - name: Create artifact
         run: mkdir dir && echo ${{ matrix.node }} > dir/out.txt
       - name: Create tarball
-        run: tar -cvf llvm-${{ matrix.node }}.tar dir
+        run: tar -czvf llvm-${{ matrix.node }}.tar.gz dir
       - name: Create test artifact
         uses: actions/upload-artifact@v2
         with:
           name: llvm-${{ matrix.node }}
-          path: llvm-${{ matrix.node }}.tar
+          path: llvm-${{ matrix.node }}.tar.gz
 
   #     - name: Compile LLVM
   #       run: |
