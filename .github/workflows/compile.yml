@@ -33,7 +33,7 @@ jobs:
         run: sudo apt-get install build-essential subversion swig python3-dev libedit-dev libncurses5-dev
 
       - name: Fix xlocale.h
-        run: ln -s /usr/include/locale.h /usr/include/xlocale.h
+        run: sudo ln -s /usr/include/locale.h /usr/include/xlocale.h
 
       - name: Install llvmenv
         run: cargo install llvmenv
