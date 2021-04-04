@@ -29,6 +29,9 @@ jobs:
           ]
     runs-on: ubuntu-latest
     steps:
+      - name: Install deps
+        run: sudo apt-get install build-essential subversion swig python3-dev libedit-dev libncurses5-dev
+
       - name: Install llvmenv
         run: cargo install llvmenv
 
