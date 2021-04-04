@@ -33,12 +33,14 @@ jobs:
       #       run: cargo install llvmenv
 
       - name: Create artifact
-        run: mkdir ${{ matrix.node }} && echo ${{ matrix.node }} > ${{ matrix.node }}/out.txt
+        run: mkdir dir && echo ${{ matrix.node }} > dir/out.txt
+      - name: Create tarball
+        run: tar -cvf llvm-${{ matrix.node }}.tar dir
       - name: Create test artifact
         uses: actions/upload-artifact@v2
         with:
           name: llvm-${{ matrix.node }}
-          path: "."
+          path: llvm-${{ matrix.node }}.tar
 
   #     - name: Compile LLVM
   #       run: |
