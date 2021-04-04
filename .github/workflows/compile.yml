@@ -29,29 +29,22 @@ jobs:
           ]
     runs-on: ubuntu-latest
     steps:
-      #     - name: Install llvmenv
-      #       run: cargo install llvmenv
+      - name: Install llvmenv
+        run: cargo install llvmenv
 
-      - name: Create artifact
-        run: mkdir dir && echo ${{ matrix.node }} > dir/out.txt
+      - name: Compile LLVM
+        run: |
+          llvmenv init
+          llvmenv build-entry ${{ matrix.node }}
+
       - name: Create tarball
-        run: tar -czvf llvm-${{ matrix.node }}.tar.gz dir
+        run: tar -czvf llvm-${{ matrix.node }}.tar.gz ~/.local/share/llvmenv
+
       - name: Create test artifact
         uses: actions/upload-artifact@v2
         with:
           name: llvm-${{ matrix.node }}
           path: llvm-${{ matrix.node }}.tar.gz
-
-  #     - name: Compile LLVM
-  #       run: |
-  #         llvmenv init
-  #         llvmenv build-entry ${{ matrix.node }}
-  #
-  #     - name: Upload artifacts
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: llvm-${{ matrix.node }}
-  #         path: ~/.local/share/llvmenv
 
   create-release:
     runs-on: ubuntu-latest
