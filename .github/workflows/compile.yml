@@ -29,14 +29,16 @@ jobs:
           ]
     runs-on: ubuntu-latest
     steps:
-      - name: Install llvmenv
-        run: cargo install llvmenv
+      #     - name: Install llvmenv
+      #       run: cargo install llvmenv
 
+      - name: Create artifact
+        run: echo ${{ matrix.node }} > out.txt
       - name: Create test artifact
         uses: actions/upload-artifact@v2
         with:
           name: llvm-${{ matrix.node }}
-          path: README.md
+          path: out.txt
 
   #     - name: Compile LLVM
   #       run: |
