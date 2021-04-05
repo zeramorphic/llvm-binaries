@@ -6,16 +6,24 @@ jobs:
   compile-llvm:
     strategy:
       matrix:
-        node:
-          [
-            "11.0.0",
-            "10.0.1",
-            "10.0.0",
-            "9.0.1",
-            "8.0.1",
-            "9.0.0",
-            "8.0.0",
-          ]
+        node: ["11.0.0"]
+    #"10.0.1",
+    #"10.0.0",
+    #"9.0.1",
+    #"8.0.1",
+    #"9.0.0",
+    #"8.0.0"
+    #"7.1.0",
+    #"7.0.1",
+    #"7.0.0",
+    #"6.0.1",
+    #"6.0.0",
+    #"5.0.2",
+    #"5.0.1",
+    #"4.0.1",
+    #"4.0.0",
+    #"3.9.1",
+    #"3.9.0",
     runs-on: ubuntu-latest
     steps:
       - name: Install deps
@@ -24,22 +32,57 @@ jobs:
       - name: Fix xlocale.h
         run: sudo ln -s /usr/include/locale.h /usr/include/xlocale.h
 
-      - name: Install llvmenv
-        run: cargo install llvmenv
+      - name: Download LLVM sources
+        run: |
+          cd ~
+          curl -sLo src.tar.xz https://github.com/llvm/llvm-project/releases/download/llvmorg-${{ matrix.node }}/llvm-project-${{ matrix.node }}.tar.xz
+
+      - name: Unzip LLVM sources
+        run: |
+          cd ~
+          7z x src.tar.xz
+          7z x src.tar
+
+      - name: Configure CMake
+        run: |
+          mkdir ~/llvm_build
+          cd ~/llvm_build
+          cmake ../llvm-project-${{ matrix.node }}/llvm
 
       - name: Compile LLVM
         run: |
-          llvmenv init
-          llvmenv build-entry ${{ matrix.node }}
+          cd ~/llvm_build
+          cmake --build .
 
-      - name: Create tarball
-        run: tar -czvf llvm-${{ matrix.node }}.tar.gz ~/.local/share/llvmenv
+      - name: Install LLVM
+        run: |
+          cd ~/llvm_build
+          mkdir ~/llvm_bin
+          cmake -DCMAKE_INSTALL_PREFIX=~/llvm_bin -P cmake_install.cmake
+          cmake --build . --target install
 
-      - name: Create test artifact
+      - name: Create tarballs
+        run: |
+          cd ~
+          tar -czvf llvm-${{ matrix.node }}.bin.tar.gz -C llvm_bin/bin *
+          tar -czvf llvm-${{ matrix.node }}.lib.tar.gz -C llvm_bin/lib *
+          tar -czvf llvm-${{ matrix.node }}.include.tar.gz -C llvm_bin/include *
+
+      - name: Upload binary artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: llvm-${{ matrix.node }}
-          path: llvm-${{ matrix.node }}.tar.gz
+          name: llvm-${{ matrix.node }}.bin
+          path: ~/llvm-${{ matrix.node }}.bin.tar.gz
+      - name: Upload library artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: llvm-${{ matrix.node }}.lib
+          path: ~/llvm-${{ matrix.node }}.lib.tar.gz
+      - name: Upload include artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: llvm-${{ matrix.node }}.include
+          path: ~/llvm-${{ matrix.node }}.include.tar.gz
 
   create-release:
     runs-on: ubuntu-latest
