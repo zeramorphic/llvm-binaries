@@ -26,12 +26,6 @@ jobs:
     #"3.9.0",
     runs-on: ubuntu-latest
     steps:
-      - name: Install deps
-        run: sudo apt-get install build-essential subversion swig python3-dev libedit-dev libncurses5-dev
-
-      - name: Fix xlocale.h
-        run: sudo ln -s /usr/include/locale.h /usr/include/xlocale.h
-
       - name: Download LLVM sources
         run: |
           cd ~
