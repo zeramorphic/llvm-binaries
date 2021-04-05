@@ -26,6 +26,9 @@ jobs:
     #"3.9.0",
     runs-on: ubuntu-latest
     steps:
+      - name: Free up 24GB of disk space
+        run: sudo rm -rf /usr/share/dotnet
+
       - name: Download LLVM sources
         run: |
           cd ~
