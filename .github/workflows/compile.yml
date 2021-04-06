@@ -37,12 +37,12 @@ jobs:
 
       - name: Download LLVM sources
         run: |
-          cd ~
+          cd ${GITHUB_WORKSPACE}
           curl -sLo src.tar.xz https://github.com/llvm/llvm-project/releases/download/llvmorg-${{ matrix.node }}/llvm-project-${{ matrix.node }}.tar.xz
 
       - name: Unzip LLVM sources
         run: |
-          cd ~
+          cd ${GITHUB_WORKSPACE}
           7z x src.tar.xz
           7z x src.tar
           rm src.tar.xz
@@ -55,25 +55,25 @@ jobs:
 
       - name: Configure CMake
         run: |
-          mkdir ~/llvm_build
-          cd ~/llvm_build
+          mkdir ${GITHUB_WORKSPACE}/llvm_build
+          cd ${GITHUB_WORKSPACE}/llvm_build
           cmake ../llvm-project-${{ matrix.node }}/llvm
 
       - name: Compile LLVM
         run: |
-          cd ~/llvm_build
+          cd ${GITHUB_WORKSPACE}/llvm_build
           cmake --build .
 
       - name: Install LLVM
         run: |
-          cd ~/llvm_build
-          mkdir ~/llvm_bin
-          cmake -DCMAKE_INSTALL_PREFIX=/home/runner/llvm_bin -P cmake_install.cmake
+          cd ${GITHUB_WORKSPACE}/llvm_build
+          mkdir ${GITHUB_WORKSPACE}/llvm_bin
+          cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/llvm_bin -P cmake_install.cmake
           cmake --build . --target install
 
       - name: Create tarballs
         run: |
-          cd ~
+          cd ${GITHUB_WORKSPACE}
           tar -czvf llvm-${{ matrix.node }}.bin.tar.gz -C llvm_bin/bin *
           tar -czvf llvm-${{ matrix.node }}.lib.tar.gz -C llvm_bin/lib *
           tar -czvf llvm-${{ matrix.node }}.include.tar.gz -C llvm_bin/include *
@@ -82,17 +82,17 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: llvm-${{ matrix.node }}.bin
-          path: ~/llvm-${{ matrix.node }}.bin.tar.gz
+          path: ${GITHUB_WORKSPACE}/llvm-${{ matrix.node }}.bin.tar.gz
       - name: Upload library artifacts
         uses: actions/upload-artifact@v2
         with:
           name: llvm-${{ matrix.node }}.lib
-          path: ~/llvm-${{ matrix.node }}.lib.tar.gz
+          path: ${GITHUB_WORKSPACE}/llvm-${{ matrix.node }}.lib.tar.gz
       - name: Upload include artifacts
         uses: actions/upload-artifact@v2
         with:
           name: llvm-${{ matrix.node }}.include
-          path: ~/llvm-${{ matrix.node }}.include.tar.gz
+          path: ${GITHUB_WORKSPACE}/llvm-${{ matrix.node }}.include.tar.gz
 
   create-release:
     runs-on: ubuntu-latest
