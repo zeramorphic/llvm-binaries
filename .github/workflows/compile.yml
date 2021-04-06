@@ -55,7 +55,7 @@ jobs:
         run: |
           cd ~/llvm_build
           mkdir ~/llvm_bin
-          cmake -DCMAKE_INSTALL_PREFIX=~/llvm_bin -P cmake_install.cmake
+          cmake -DCMAKE_INSTALL_PREFIX=/home/runner/llvm_bin -P cmake_install.cmake
           cmake --build . --target install
 
       - name: Create tarballs
