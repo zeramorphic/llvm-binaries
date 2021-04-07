@@ -33,6 +33,10 @@ jobs:
           sudo rm -rf /usr/local/share/boost
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
           sudo apt clean
+          ls -lah /usr/lib/
+          ls -lah /usr/share/
+          ls -lah /usr/local/lib/
+          ls -lah /usr/local/share/
 
       - name: Download LLVM sources
         run: |
@@ -62,6 +66,8 @@ jobs:
         run: |
           cd ${GITHUB_WORKSPACE}/llvm_build
           cmake --build .
+          echo "Free space:"
+          df -h
 
       - name: Install LLVM
         run: |
@@ -69,6 +75,8 @@ jobs:
           mkdir ${GITHUB_WORKSPACE}/llvm_bin
           cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/llvm_bin -P cmake_install.cmake
           cmake --build . --target install
+          echo "Free space:"
+          df -h
 
       - name: Create tarballs
         run: |
@@ -76,6 +84,8 @@ jobs:
           tar -czvf llvm-${{ matrix.node }}.bin.tar.gz -C llvm_bin/bin *
           tar -czvf llvm-${{ matrix.node }}.lib.tar.gz -C llvm_bin/lib *
           tar -czvf llvm-${{ matrix.node }}.include.tar.gz -C llvm_bin/include *
+          echo "Free space:"
+          df -h
 
       - name: Upload binary artifacts
         uses: actions/upload-artifact@v2
