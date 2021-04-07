@@ -89,9 +89,9 @@ jobs:
       - name: Create tarballs
         run: |
           cd ${GITHUB_WORKSPACE}
-          tar -czvf llvm-${{ matrix.node }}.bin.tar.gz -C llvm_bin/bin *
-          tar -czvf llvm-${{ matrix.node }}.lib.tar.gz -C llvm_bin/lib *
-          tar -czvf llvm-${{ matrix.node }}.include.tar.gz -C llvm_bin/include *
+          tar -czvf llvm-${{ matrix.node }}.bin.tar.gz -C llvm_bin bin
+          tar -czvf llvm-${{ matrix.node }}.lib.tar.gz -C llvm_bin lib
+          tar -czvf llvm-${{ matrix.node }}.include.tar.gz -C llvm_bin include
           echo "Free space:"
           df -h
 
