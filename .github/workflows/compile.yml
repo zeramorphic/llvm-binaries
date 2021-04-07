@@ -99,17 +99,17 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: llvm-${{ matrix.node }}.bin
-          path: ${GITHUB_WORKSPACE}/llvm-${{ matrix.node }}.bin.tar.gz
+          path: /home/runner/work/llvm-binaries/llvm-binaries/llvm-${{ matrix.node }}.bin.tar.gz
       - name: Upload library artifacts
         uses: actions/upload-artifact@v2
         with:
           name: llvm-${{ matrix.node }}.lib
-          path: ${GITHUB_WORKSPACE}/llvm-${{ matrix.node }}.lib.tar.gz
+          path: /home/runner/work/llvm-binaries/llvm-binaries/llvm-${{ matrix.node }}.lib.tar.gz
       - name: Upload include artifacts
         uses: actions/upload-artifact@v2
         with:
           name: llvm-${{ matrix.node }}.include
-          path: ${GITHUB_WORKSPACE}/llvm-${{ matrix.node }}.include.tar.gz
+          path: /home/runner/work/llvm-binaries/llvm-binaries/llvm-${{ matrix.node }}.include.tar.gz
 
   create-release:
     runs-on: ubuntu-latest
