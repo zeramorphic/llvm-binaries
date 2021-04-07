@@ -29,14 +29,22 @@ jobs:
       - name: Maximize build space
         run: |
           sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/share/java
+          sudo rm -rf /usr/share/mono
+          sudo rm -rf /usr/share/mono-2.0
+          sudo rm -rf /usr/share/php*
           sudo rm -rf /usr/local/lib/android
           sudo rm -rf /usr/local/share/boost
+          sudo rm -rf /usr/lib/jvm
+          sudo rm -rf /usr/lib/llvm-10
+          sudo rm -rf /usr/lib/llvm-11
+          sudo rm -rf /usr/lib/llvm-9
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
           sudo apt clean
-          ls -lah /usr/lib/
-          ls -lah /usr/share/
-          ls -lah /usr/local/lib/
-          ls -lah /usr/local/share/
+          sudo swapoff -a -v
+          sudo rm /swapfile
+          sudo cp /etc/fstab /etc/fstab.bak
+          sudo sed -i '/\/swapfile/d' /etc/fstab
 
       - name: Download LLVM sources
         run: |
@@ -50,9 +58,6 @@ jobs:
           7z x src.tar
           rm src.tar.xz
           rm src.tar
-
-      - name: Check free space
-        run: |
           echo "Free space:"
           df -h
 
@@ -75,6 +80,7 @@ jobs:
           mkdir ${GITHUB_WORKSPACE}/llvm_bin
           cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/llvm_bin -P cmake_install.cmake
           cmake --build . --target install
+          sudo rm -rf ${GITHUB_WORKSPACE}/llvm_build
           echo "Free space:"
           df -h
 
