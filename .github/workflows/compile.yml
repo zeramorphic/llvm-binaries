@@ -26,14 +26,12 @@ jobs:
     #"3.9.0",
     runs-on: ubuntu-latest
     steps:
-      - name: Maximize build space
+      - name: Remove unused programs
         run: |
-          sudo rm -rf /usr/share/dotnet
           sudo rm -rf /usr/share/java
           sudo rm -rf /usr/share/mono
           sudo rm -rf /usr/share/mono-2.0
           sudo rm -rf /usr/share/php*
-          sudo rm -rf /usr/local/lib/android
           sudo rm -rf /usr/local/share/boost
           sudo rm -rf /usr/lib/jvm
           sudo rm -rf /usr/lib/llvm-10
@@ -41,10 +39,14 @@ jobs:
           sudo rm -rf /usr/lib/llvm-9
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
           sudo apt clean
-          sudo swapoff -a -v
-          sudo rm /swapfile
-          sudo cp /etc/fstab /etc/fstab.bak
-          sudo sed -i '/\/swapfile/d' /etc/fstab
+
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 512
+          remove-dotnet: true
+          remove-android: true
+          remove-haskell: true
 
       - name: Download LLVM sources
         run: |
