@@ -81,7 +81,7 @@ jobs:
           cd ${GITHUB_WORKSPACE}/llvm_build
           mkdir ${GITHUB_WORKSPACE}/llvm_bin
           cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/llvm_bin -P cmake_install.cmake
-          cmake --build . --target install
+          sudo cmake --build . --target install
           sudo rm -rf ${GITHUB_WORKSPACE}/llvm_build
           echo "Free space:"
           df -h
